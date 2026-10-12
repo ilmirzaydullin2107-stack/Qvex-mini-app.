@@ -1,0 +1,141 @@
+
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08090e">
+<title>QVEX 2.0</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<div class="shell">
+<header>
+<div class="brand">
+<div class="logo">Q</div>
+<div>
+<strong>QVEX</strong>
+<small>INVEST · TRADE · GROW</small>
+</div>
+</div>
+<button class="profile-btn" data-page="profile">◉ Профиль</button>
+</header>
+
+<div class="ticker" aria-label="Демонстрационные котировки">
+<div class="ticker-track" id="ticker"></div>
+</div>
+
+<main>
+<section class="page active" id="home">
+
+<div class="hero card">
+<div class="eyebrow">ЛИЧНЫЙ КАБИНЕТ <span class="demo">ДЕМО</span></div>
+<h2>Добро пожаловать в QVEX</h2>
+<p class="muted">Управляйте своим пространством в одном месте</p>
+
+<div class="balance">
+<span class="muted">Общий баланс</span>
+<h1 id="balance">0,00 ₽</h1>
+<span class="muted tiny">Данные счёта не подключены</span>
+</div>
+
+<div class="actions">
+<button class="primary" data-page="wallet">＋ Пополнить</button>
+<button class="secondary" data-page="wallet">− Вывести</button>
+</div>
+</div>
+
+<section class="card">
+<div class="section-head">
+<div>
+<h3>Обзор рынка</h3>
+<span class="muted tiny">Симуляция · не реальные котировки</span>
+</div>
+<span class="live"><i></i> DEMO</span>
+</div>
+
+<div class="chart-top">
+<strong>BTC / USDT</strong>
+<span class="up" id="quote">68 432,12</span>
+</div>
+
+<div class="periods">
+<button class="selected" data-period="1m">1м</button>
+<button data-period="5m">5м</button>
+<button data-period="15m">15м</button>
+<button data-period="1h">1ч</button>
+</div>
+
+<canvas id="chart" role="img" aria-label="Демонстрационный свечной график"></canvas>
+</section>
+
+<section class="card">
+<h3>Калькулятор прибыли</h3>
+<p class="muted tiny">Математический пример, не прогноз доходности</p>
+
+<label for="amount">Сумма, ₽</label>
+<input id="amount" type="number" min="0" step="any" placeholder="Например, 1000" inputmode="decimal">
+
+<label for="percent">Изменение, %</label>
+<input id="percent" type="number" step="any" placeholder="Например, 5" inputmode="decimal">
+
+<button class="primary wide" id="calc">Рассчитать</button>
+<p id="result" aria-live="polite"></p>
+</section>
+
+<section class="card">
+<div class="section-head">
+<h3>Последние операции</h3>
+<span class="muted tiny">История</span>
+</div>
+<div class="empty">Операций пока нет</div>
+</section>
+
+<section class="card referral">
+<h3>Приглашайте друзей</h3>
+<p class="muted">Ваше сообщество QVEX</p>
+<button class="secondary" data-page="friends">Открыть раздел →</button>
+</section>
+
+</section>
+
+<section class="page" id="wallet">
+<div class="card">
+<h2>Кошелёк</h2>
+<div class="balance">
+<span class="muted">Баланс</span>
+<h1>0,00 ₽</h1>
+</div>
+<p class="muted">Финансовые операции ещё не подключены. Никакие платежи не принимаются.</p>
+</div>
+</section>
+
+<section class="page" id="friends">
+<div class="card">
+<h2>Друзья</h2>
+<p class="muted">Реферальная система пока в разработке.</p>
+</div>
+</section>
+
+<section class="page" id="profile">
+<div class="card">
+<h2>Профиль</h2>
+<p id="username" class="muted">Гостевой режим</p>
+<p class="muted tiny">Telegram Mini App</p>
+</div>
+</section>
+
+</main>
+</div>
+
+<nav aria-label="Основная навигация">
+<button class="active" data-page="home"><span>⌂</span>Главная</button>
+<button data-page="wallet"><span>▣</span>Кошелёк</button>
+<button data-page="friends"><span>♧</span>Друзья</button>
+<button data-page="profile"><span>◎</span>Профиль</button>
+</nav>
+
+<script src="app.js"></script>
+</body>
+</html>
