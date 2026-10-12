@@ -1,16 +1,318 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#08090e">
 <title>QVEX 2.0</title>
-<link rel="stylesheet" href="style.css">
+
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+:root {
+  --bg:#08090e;
+  --card:#131722;
+  --red:#ff1744;
+  --green:#00e59b;
+  --muted:#929daf;
+  --border:#293143;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+body {
+  margin:0;
+  padding:15px 13px 100px;
+  background:
+    radial-gradient(circle at top right,#39091c,transparent 40%),
+    var(--bg);
+  color:white;
+  font-family:Arial,sans-serif;
+}
+
+.wrapper {
+  max-width:850px;
+  margin:auto;
+}
+
+header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo {
+  display:grid;
+  place-items:center;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ff6075,#e90037);
+  box-shadow:0 0 25px #ff174477;
+  font-size:30px;
+  font-weight:900;
+  animation:glow 2s infinite alternate;
+}
+
+.brand strong {
+  display:block;
+  font-size:27px;
+  color:#ff3157;
+}
+
+.brand small {
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:1px;
+}
+
+button {
+  border:0;
+  border-radius:12px;
+  padding:13px;
+  background:var(--red);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:active {
+  transform:scale(.97);
+}
+
+.outline {
+  background:#151925;
+  border:1px solid #495168;
+}
+
+.card {
+  padding:20px;
+  margin-bottom:17px;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:linear-gradient(145deg,#171b27,#0c0e15);
+  animation:appear .5s ease;
+}
+
+.hero {
+  border-color:#8b1a3b;
+  background:
+    radial-gradient(circle at top right,#8b123c66,transparent 60%),
+    #11121c;
+}
+
+.muted {
+  color:var(--muted);
+}
+
+.small {
+  font-size:12px;
+}
+
+h2 {
+  margin:10px 0;
+}
+
+h3 {
+  margin-top:0;
+}
+
+.balance {
+  padding:22px 0;
+  margin:18px 0;
+  border-top:1px solid #ffffff15;
+  border-bottom:1px solid #ffffff15;
+}
+
+.balance h1 {
+  font-size:42px;
+  margin:10px 0;
+}
+
+.actions {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.ticker {
+  overflow:hidden;
+  padding:13px;
+  margin-bottom:17px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:#10141e;
+}
+
+.track {
+  display:flex;
+  gap:35px;
+  width:max-content;
+  white-space:nowrap;
+  animation:move 24s linear infinite;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.green {
+  color:var(--green);
+}
+
+.red {
+  color:#ff3157;
+}
+
+.chart-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.periods {
+  display:flex;
+  gap:7px;
+  margin:17px 0;
+}
+
+.periods button {
+  padding:8px 12px;
+  background:#202636;
+  color:#aab4c4;
+  font-size:12px;
+}
+
+.periods button.active {
+  background:#70132d;
+  color:white;
+  border:1px solid var(--red);
+}
+
+canvas {
+  width:100%;
+  height:230px;
+  display:block;
+  background:#080d15;
+  border-radius:10px;
+}
+
+input {
+  width:100%;
+  margin:8px 0;
+  padding:15px;
+  background:#090d16;
+  border:1px solid #394359;
+  border-radius:12px;
+  color:white;
+  font-size:16px;
+  outline:none;
+}
+
+input:focus {
+  border-color:var(--red);
+}
+
+.full {
+  width:100%;
+  margin-top:12px;
+}
+
+#result {
+  color:var(--green);
+  font-weight:bold;
+}
+
+.empty {
+  padding:25px;
+  text-align:center;
+  border:1px dashed #354056;
+  border-radius:12px;
+  color:var(--muted);
+}
+
+.page {
+  display:none;
+}
+
+.page.active {
+  display:block;
+}
+
+nav {
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  display:flex;
+  padding:12px 4px;
+  padding-bottom:max(12px,env(safe-area-inset-bottom));
+  background:#10131df5;
+  border-top:1px solid var(--border);
+  backdrop-filter:blur(15px);
+  z-index:10;
+}
+
+nav button {
+  flex:1;
+  background:transparent;
+  color:#929daf;
+  font-size:11px;
+  padding:5px;
+}
+
+nav button span {
+  display:block;
+  font-size:24px;
+  margin-bottom:5px;
+}
+
+nav button.active {
+  color:var(--red);
+}
+
+@keyframes glow {
+  from {box-shadow:0 0 10px #ff174444}
+  to {box-shadow:0 0 30px #ff1744aa}
+}
+
+@keyframes appear {
+  from {opacity:0;transform:translateY(12px)}
+  to {opacity:1;transform:translateY(0)}
+}
+
+@keyframes move {
+  from {transform:translateX(0)}
+  to {transform:translateX(-50%)}
+}
+
+@media(max-width:400px) {
+  .balance h1 {font-size:36px}
+  .card {padding:17px}
+  .brand strong {font-size:24px}
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
 </head>
+
 <body>
-<div class="shell">
+
+<div class="wrapper">
+
 <header>
 <div class="brand">
 <div class="logo">Q</div>
@@ -19,123 +321,376 @@
 <small>INVEST · TRADE · GROW</small>
 </div>
 </div>
-<button class="profile-btn" data-page="profile">◉ Профиль</button>
+<button class="outline" onclick="show('profile')">
+Профиль
+</button>
 </header>
 
-<div class="ticker" aria-label="Демонстрационные котировки">
-<div class="ticker-track" id="ticker"></div>
+<div class="ticker">
+<div class="track" id="ticker"></div>
 </div>
 
 <main>
-<section class="page active" id="home">
 
-<div class="hero card">
-<div class="eyebrow">ЛИЧНЫЙ КАБИНЕТ <span class="demo">ДЕМО</span></div>
+<section id="home" class="page active">
+
+<div class="card hero">
+<p class="small red">ЛИЧНЫЙ КАБИНЕТ · ДЕМО</p>
 <h2>Добро пожаловать в QVEX</h2>
-<p class="muted">Управляйте своим пространством в одном месте</p>
+<p class="muted small">Ваша финансовая панель</p>
 
 <div class="balance">
 <span class="muted">Общий баланс</span>
-<h1 id="balance">0,00 ₽</h1>
-<span class="muted tiny">Данные счёта не подключены</span>
+<h1>0,00 ₽</h1>
+<span class="muted small">Счёт не подключён</span>
 </div>
 
 <div class="actions">
-<button class="primary" data-page="wallet">＋ Пополнить</button>
-<button class="secondary" data-page="wallet">− Вывести</button>
+<button onclick="show('wallet')">＋ Пополнить</button>
+<button class="outline" onclick="show('wallet')">
+− Вывести
+</button>
 </div>
 </div>
 
-<section class="card">
-<div class="section-head">
+<div class="card">
+
+<div class="chart-header">
 <div>
 <h3>Обзор рынка</h3>
-<span class="muted tiny">Симуляция · не реальные котировки</span>
+<span class="muted small">Демонстрационные данные</span>
 </div>
-<span class="live"><i></i> DEMO</span>
+<span class="green small">● DEMO</span>
 </div>
 
-<div class="chart-top">
+<div class="chart-header" style="margin-top:20px">
 <strong>BTC / USDT</strong>
-<span class="up" id="quote">68 432,12</span>
+<strong class="green" id="price">68 432.12</strong>
 </div>
 
 <div class="periods">
-<button class="selected" data-period="1m">1м</button>
-<button data-period="5m">5м</button>
-<button data-period="15m">15м</button>
-<button data-period="1h">1ч</button>
+<button class="active" onclick="period(this,1)">1м</button>
+<button onclick="period(this,5)">5м</button>
+<button onclick="period(this,15)">15м</button>
+<button onclick="period(this,60)">1ч</button>
 </div>
 
-<canvas id="chart" role="img" aria-label="Демонстрационный свечной график"></canvas>
-</section>
+<canvas id="chart"></canvas>
+</div>
 
-<section class="card">
+<div class="card">
 <h3>Калькулятор прибыли</h3>
-<p class="muted tiny">Математический пример, не прогноз доходности</p>
+<p class="muted small">Пример расчёта, не прогноз доходности</p>
 
-<label for="amount">Сумма, ₽</label>
-<input id="amount" type="number" min="0" step="any" placeholder="Например, 1000" inputmode="decimal">
+<input id="amount" type="number" placeholder="Сумма ₽">
+<input id="percent" type="number" placeholder="Изменение %">
 
-<label for="percent">Изменение, %</label>
-<input id="percent" type="number" step="any" placeholder="Например, 5" inputmode="decimal">
+<button class="full" onclick="calculate()">
+Рассчитать
+</button>
 
-<button class="primary wide" id="calc">Рассчитать</button>
-<p id="result" aria-live="polite"></p>
-</section>
-
-<section class="card">
-<div class="section-head">
-<h3>Последние операции</h3>
-<span class="muted tiny">История</span>
+<p id="result"></p>
 </div>
-<div class="empty">Операций пока нет</div>
-</section>
 
-<section class="card referral">
+<div class="card">
+<h3>Последние операции</h3>
+<div class="empty">Операций пока нет</div>
+</div>
+
+<div class="card hero">
 <h3>Приглашайте друзей</h3>
 <p class="muted">Ваше сообщество QVEX</p>
-<button class="secondary" data-page="friends">Открыть раздел →</button>
-</section>
+<button onclick="show('friends')">
+Мои друзья →
+</button>
+</div>
 
 </section>
 
-<section class="page" id="wallet">
+<section id="wallet" class="page">
 <div class="card">
 <h2>Кошелёк</h2>
 <div class="balance">
-<span class="muted">Баланс</span>
+<p class="muted">Общий баланс</p>
 <h1>0,00 ₽</h1>
 </div>
-<p class="muted">Финансовые операции ещё не подключены. Никакие платежи не принимаются.</p>
+<p class="muted">
+Финансовые операции пока не подключены.
+</p>
 </div>
 </section>
 
-<section class="page" id="friends">
+<section id="friends" class="page">
 <div class="card">
 <h2>Друзья</h2>
-<p class="muted">Реферальная система пока в разработке.</p>
+<p class="muted">
+Реферальная система в разработке.
+</p>
 </div>
 </section>
 
-<section class="page" id="profile">
+<section id="profile" class="page">
 <div class="card">
-<h2>Профиль</h2>
-<p id="username" class="muted">Гостевой режим</p>
-<p class="muted tiny">Telegram Mini App</p>
+<h2>Мой профиль</h2>
+<p id="username">Гостевой режим</p>
+<p class="muted small">QVEX Telegram Mini App</p>
 </div>
 </section>
 
 </main>
 </div>
 
-<nav aria-label="Основная навигация">
-<button class="active" data-page="home"><span>⌂</span>Главная</button>
-<button data-page="wallet"><span>▣</span>Кошелёк</button>
-<button data-page="friends"><span>♧</span>Друзья</button>
-<button data-page="profile"><span>◎</span>Профиль</button>
+<nav>
+<button class="active" data-page="home" onclick="show('home')">
+<span>⌂</span>Главная
+</button>
+<button data-page="wallet" onclick="show('wallet')">
+<span>▣</span>Кошелёк
+</button>
+<button data-page="friends" onclick="show('friends')">
+<span>♧</span>Друзья
+</button>
+<button data-page="profile" onclick="show('profile')">
+<span>◎</span>Профиль
+</button>
 </nav>
 
-<script src="app.js"></script>
+<script>
+
+/* TELEGRAM */
+
+const tg = window.Telegram?.WebApp;
+
+if(tg) {
+  tg.ready();
+  tg.expand();
+
+  const user = tg.initDataUnsafe?.user;
+
+  if(user) {
+    document.getElementById("username").textContent =
+      [user.first_name,user.last_name]
+        .filter(Boolean).join(" ");
+  }
+}
+
+/* NAVIGATION */
+
+function show(id) {
+  document.querySelectorAll(".page").forEach(p=>{
+    p.classList.toggle("active",p.id===id);
+  });
+
+  document.querySelectorAll("nav button").forEach(b=>{
+    b.classList.toggle("active",b.dataset.page===id);
+  });
+
+  window.scrollTo(0,0);
+
+  if(id==="home") resize();
+}
+
+/* CALCULATOR */
+
+function calculate() {
+  const a=document.getElementById("amount");
+  const p=document.getElementById("percent");
+  const r=document.getElementById("result");
+
+  const amount=Number(a.value);
+  const percent=Number(p.value);
+
+  if(
+    a.value.trim()==="" ||
+    p.value.trim()==="" ||
+    !Number.isFinite(amount) ||
+    !Number.isFinite(percent) ||
+    amount<=0
+  ) {
+    r.textContent="Введите корректные значения";
+    r.style.color="#ff3157";
+    return;
+  }
+
+  const profit=amount*percent/100;
+
+  const format=n=>n.toLocaleString("ru-RU",{
+    style:"currency",
+    currency:"RUB"
+  });
+
+  r.style.color=profit>=0?"#00e59b":"#ff3157";
+
+  r.textContent=
+    "Изменение: "+format(profit)+
+    " | Итог: "+format(amount+profit);
+}
+
+/* DEMO TICKER */
+
+const assets=[
+  ["BTC","68432.12","+2.45%"],
+  ["ETH","3248.76","+3.21%"],
+  ["SOL","162.43","+1.87%"],
+  ["BNB","587.12","+1.34%"]
+];
+
+const ticker=document.getElementById("ticker");
+
+[...assets,...assets].forEach(a=>{
+  const item=document.createElement("div");
+  item.innerHTML=
+    a[0]+"/USDT "+
+    '<span class="green">'+a[1]+" "+a[2]+"</span>";
+  ticker.appendChild(item);
+});
+
+/* DEMO TRADING CHART */
+
+const canvas=document.getElementById("chart");
+const ctx=canvas.getContext("2d");
+
+let candles=[];
+let current=1;
+let width=0;
+let height=0;
+
+function generate(){
+  candles=[];
+  let price=68432;
+
+  for(let i=0;i<32;i++){
+    const open=price;
+    const close=Math.max(100,open+(Math.random()-.48)*170);
+
+    candles.push({
+      open,
+      close,
+      high:Math.max(open,close)+Math.random()*70,
+      low:Math.min(open,close)-Math.random()*70
+    });
+
+    price=close;
+  }
+}
+
+function resize(){
+  const rect=canvas.getBoundingClientRect();
+
+  if(!rect.width)return;
+
+  const dpr=Math.min(devicePixelRatio||1,2);
+
+  width=rect.width;
+  height=rect.height;
+
+  canvas.width=width*dpr;
+  canvas.height=height*dpr;
+
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  draw();
+}
+
+function draw(){
+  if(!candles.length||!width)return;
+
+  ctx.clearRect(0,0,width,height);
+
+  const max=Math.max(...candles.map(c=>c.high))+40;
+  const min=Math.min(...candles.map(c=>c.low))-40;
+
+  const top=15;
+  const bottom=height-20;
+  const plot=bottom-top;
+
+  const y=v=>top+(max-v)/(max-min)*plot;
+
+  ctx.strokeStyle="#293143";
+  ctx.lineWidth=1;
+
+  for(let i=0;i<5;i++){
+    const gy=top+i*plot/4;
+    ctx.beginPath();
+    ctx.moveTo(0,gy);
+    ctx.lineTo(width,gy);
+    ctx.stroke();
+  }
+
+  const step=width/candles.length;
+  const cw=Math.max(2,Math.min(step*.55,12));
+
+  candles.forEach((c,i)=>{
+    const x=i*step+step/2;
+    const color=c.close>=c.open?"#00e59b":"#ff3157";
+
+    ctx.strokeStyle=color;
+    ctx.fillStyle=color;
+
+    ctx.beginPath();
+    ctx.moveTo(x,y(c.high));
+    ctx.lineTo(x,y(c.low));
+    ctx.stroke();
+
+    ctx.fillRect(
+      x-cw/2,
+      Math.min(y(c.open),y(c.close)),
+      cw,
+      Math.max(1,Math.abs(y(c.open)-y(c.close)))
+    );
+  });
+
+  const last=candles[candles.length-1];
+
+  const price=document.getElementById("price");
+
+  price.textContent=last.close.toFixed(2);
+  price.style.color=
+    last.close>=last.open?"#00e59b":"#ff3157";
+}
+
+function period(button,value){
+  current=value;
+
+  document.querySelectorAll(".periods button")
+    .forEach(b=>b.classList.remove("active"));
+
+  button.classList.add("active");
+
+  generate();
+  draw();
+}
+
+generate();
+resize();
+
+window.addEventListener("resize",resize);
+
+const reducedMotion=window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
+
+if(!reducedMotion){
+  setInterval(()=>{
+    if(document.hidden)return;
+
+    const last=candles[candles.length-1];
+
+    if(!last)return;
+
+    last.close=Math.max(
+      100,
+      last.close+(Math.random()-.5)*85
+    );
+
+    last.high=Math.max(last.high,last.close);
+    last.low=Math.min(last.low,last.close);
+
+    draw();
+  },900);
+}
+
+</script>
+
 </body>
 </html>
